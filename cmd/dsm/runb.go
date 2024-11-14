@@ -63,12 +63,12 @@ var RunbCmd = &cobra.Command{
 			return errors.Errorf("Error when posting variables in senhasegura: " + err.Error())
 		}
 
-		secrets, err := appClient.GetSecrets()
+		secretsResponse, err := appClient.ListSecrets()
 		if err != nil {
 			return err
 		}
 
-		err = injectEnvironmentVariables(secrets)
+		err = injectEnvironmentVariables(secretsResponse.Secrets)
 		if err != nil {
 			return err
 		}
@@ -283,11 +283,11 @@ func deleteGitLabVars() error {
 	return nil
 }
 
-func registerApplication() (isoSdk.Client, dsmSdk.ApplicationClient, error) {
+func registerApplication() (isoSdk.Client, dsmSdk.DsmClient, error) {
 	client, _ := isoSdk.NewClient(getConfig())
-	appClient := dsmSdk.NewApplicationClient(&client, ApplicationName, Environment, System)
+	appClient := dsmSdk.NewDsmClient(&client, ApplicationName, Environment, System)
 
-	appResponse, err := appClient.Register()
+	appResponse, err := appClient.RegisterApplication()
 	if err != nil {
 		return client, appClient, err
 	}
