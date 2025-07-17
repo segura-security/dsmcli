@@ -35,18 +35,6 @@ type Application struct {
 	Secrets     secrets  `json:"secrets"`
 }
 
-type secrets []Secret
-
-type Secret struct {
-	SecretID       string              `json:"secret_id"`
-	SecretName     string              `json:"secret_name"`
-	Identity       string              `json:"identity"`
-	Version        string              `json:"version"`
-	ExpirationDate string              `json:"expiration_date"`
-	Engine         string              `json:"engine"`
-	Data           []map[string]string `json:"data"`
-}
-
 func (r *ApplicationResponse) Unmarshal(msg []byte) error {
 	err := json.Unmarshal(msg, r)
 	if err != nil {
